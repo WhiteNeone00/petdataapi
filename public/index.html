@@ -20,32 +20,65 @@
             background: #0a0e27;
         }
 
-        .topbar {
+        .navbar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(90deg, #ff006e, #00ff88, #00ccff);
-            background-size: 200% 200%;
-            animation: barShift 6s ease infinite;
-            padding: 12px 20px;
-            text-align: center;
-            color: white;
-            font-weight: 700;
+            background: linear-gradient(90deg, rgba(10,14,39,0.95), rgba(10,14,39,0.85));
+            border-bottom: 2px solid rgba(0, 255, 136, 0.5);
+            padding: 0;
             z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.6), inset 0 1px 0 rgba(255,255,255,0.2);
-            letter-spacing: 1px;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
         }
 
-        @keyframes barShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
         }
 
-        .announcement {
-            font-size: 0.95em;
+        .navbar-logo {
+            font-size: 1.4em;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        .navbar-announcement {
+            flex: 1;
+            text-align: center;
+            color: #00ff88;
+            font-weight: 600;
+            margin: 0 20px;
             animation: smoothPulse 2s ease-in-out infinite;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .navbar-link {
+            color: #00ccff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .navbar-link:hover {
+            color: #00ff88;
+            border-bottom-color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
         }
 
         @keyframes smoothPulse {
@@ -60,14 +93,14 @@
             top: 0;
             left: 0;
             z-index: 1;
-            padding-top: 50px;
+            padding-top: 60px;
         }
 
         #snow-container {
             position: fixed;
             width: 100%;
             height: 100%;
-            top: 50px;
+            top: 60px;
             left: 0;
             z-index: 1;
             pointer-events: none;
@@ -87,7 +120,7 @@
             position: fixed;
             width: 100%;
             height: 100%;
-            top: 50px;
+            top: 60px;
             left: 0;
             z-index: 1;
             pointer-events: none;
@@ -103,7 +136,7 @@
 
         #thunder {
             position: fixed;
-            top: 50px;
+            top: 60px;
             left: 0;
             width: 100%;
             height: 100%;
@@ -120,10 +153,10 @@
         .content {
             position: relative;
             z-index: 2;
-            height: calc(100% - 50px);
+            height: calc(100% - 60px);
             overflow-y: auto;
             padding: 40px 20px 100px;
-            margin-top: 50px;
+            margin-top: 60px;
         }
 
         .content::-webkit-scrollbar {
@@ -546,13 +579,40 @@
                 display: inline-block;
                 margin: 5px;
             }
+
+            .navbar-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .navbar-announcement {
+                margin: 8px 0;
+                font-size: 0.85em;
+            }
+
+            .navbar-links {
+                gap: 15px;
+            }
+
+            .navbar-link {
+                font-size: 0.8em;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="topbar">
-        <div class="announcement">✨ Welcome to Pet Sim 99 API Gateway! 🚀 | Status: 🟢 LIVE</div>
-    </div>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-logo">🎮 PET API</div>
+            <div class="navbar-announcement">✨ API Gateway Live | Status: 🟢 OPERATIONAL</div>
+            <ul class="navbar-links">
+                <li><a href="#collections" class="navbar-link">API</a></li>
+                <li><a href="#tester" class="navbar-link">Tester</a></li>
+                <li><a href="https://github.com/WhiteNeone00/petdataapi" class="navbar-link">GitHub</a></li>
+                <li><a href="https://eu-pet01.whee.lol/health" class="navbar-link">Status</a></li>
+            </ul>
+        </div>
+    </nav>
 
     <div id="particles-container"></div>
     <div id="snow-container"></div>
@@ -585,7 +645,7 @@
                 </div>
             </div>
 
-            <div class="endpoints-grid">
+            <div class="endpoints-grid" id="collections">
                 <div class="endpoint-card">
                     <div class="endpoint-method">GET</div>
                     <h3>/api/collections</h3>
@@ -642,7 +702,7 @@
                 </div>
             </div>
 
-            <div class="tester-section">
+            <div class="tester-section" id="tester">
                 <h2>⚡ LIVE API TESTER</h2>
                 <div class="tester-input">
                     <input type="text" id="testUrl" placeholder="Enter endpoint: /api/collections" value="/api/collections">
@@ -698,7 +758,7 @@ print(response.json())</code></pre>
         const ctx = canvas.getContext('2d');
 
         canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight - 50;
+        canvas.height = window.innerHeight - 60;
 
         const particles = [];
         const particleCount = 60;
@@ -791,7 +851,7 @@ print(response.json())</code></pre>
 
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight - 50;
+            canvas.height = window.innerHeight - 60;
         });
 
         // Smooth Snow Animation
