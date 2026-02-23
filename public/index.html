@@ -20,6 +20,39 @@
             background: #0a0e27;
         }
 
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, #ff006e, #00ff88, #00ccff);
+            background-size: 200% 200%;
+            animation: barShift 4s ease infinite;
+            padding: 12px 20px;
+            text-align: center;
+            color: white;
+            font-weight: 700;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.5);
+        }
+
+        @keyframes barShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .announcement {
+            font-size: 0.95em;
+            letter-spacing: 1px;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
         #particles-container {
             position: fixed;
             width: 100%;
@@ -27,6 +60,69 @@
             top: 0;
             left: 0;
             z-index: 1;
+            padding-top: 50px;
+        }
+
+        #snow-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 50px;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #00ff88;
+            font-size: 1.5em;
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.8);
+            animation: snowfall linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes snowfall {
+            to {
+                transform: translateY(100vh) translateX(var(--tx));
+                opacity: 0;
+            }
+        }
+
+        #thunder {
+            position: fixed;
+            top: 50px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        #emoji-rain {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 50px;
+            left: 0;
+            z-index: 2;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 2em;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
         }
 
         canvas {
@@ -36,9 +132,10 @@
         .content {
             position: relative;
             z-index: 2;
-            height: 100%;
+            height: calc(100% - 50px);
             overflow-y: auto;
-            padding: 40px 20px;
+            padding: 40px 20px 100px;
+            margin-top: 50px;
         }
 
         .content::-webkit-scrollbar {
@@ -365,6 +462,37 @@
             border-radius: 4px;
         }
 
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, transparent, rgba(10, 14, 39, 0.95));
+            border-top: 2px solid rgba(0, 255, 136, 0.3);
+            padding: 30px 20px;
+            text-align: center;
+            z-index: 100;
+            color: #00ff88;
+            font-weight: 600;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-link {
+            color: #00ccff;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 2em;
@@ -389,6 +517,16 @@
             .code-section {
                 padding: 20px;
             }
+
+            footer {
+                font-size: 0.9em;
+                padding: 20px 10px;
+            }
+
+            .footer-link {
+                display: inline-block;
+                margin: 5px;
+            }
         }
 
         .glow-text {
@@ -397,7 +535,14 @@
     </style>
 </head>
 <body>
+    <div class="topbar">
+        <div class="announcement">✨ Welcome to Pet Sim 99 API Gateway! 🚀 | Status: 🟢 LIVE</div>
+    </div>
+
     <div id="particles-container"></div>
+    <div id="snow-container"></div>
+    <div id="emoji-rain"></div>
+    <div id="thunder"></div>
 
     <div class="content">
         <div class="container">
@@ -429,56 +574,56 @@
                 <div class="endpoint-card">
                     <div class="endpoint-method">GET</div>
                     <h3>/api/collections</h3>
-                    <p>Access all 34 collections in the database</p>
-                    <a href="https://pet-api-wjkm.onrender.com/api/collections" class="endpoint-link">Execute</a>
+                    <p>Access all 34 collections</p>
+                    <a href="https://eu-pet01.whee.lol/api/collections" class="endpoint-link">Execute</a>
                 </div>
                 <div class="endpoint-card">
                     <div class="endpoint-method">GET</div>
                     <h3>/api/exists</h3>
-                    <p>Query item existence data (14,923 items)</p>
-                    <a href="https://pet-api-wjkm.onrender.com/api/exists?skip=0&limit=50" class="endpoint-link">Execute</a>
+                    <p>Item existence (14,923 items)</p>
+                    <a href="https://eu-pet01.whee.lol/api/exists?skip=0&limit=50" class="endpoint-link">Execute</a>
                 </div>
                 <div class="endpoint-card">
                     <div class="endpoint-method">GET</div>
                     <h3>/api/rap</h3>
-                    <p>Recent Average Price tracking (13,435 items)</p>
-                    <a href="https://pet-api-wjkm.onrender.com/api/rap?skip=0&limit=50" class="endpoint-link">Execute</a>
+                    <p>Recent Average Price (13,435)</p>
+                    <a href="https://eu-pet01.whee.lol/api/rap?skip=0&limit=50" class="endpoint-link">Execute</a>
                 </div>
                 <div class="endpoint-card">
                     <div class="endpoint-method">GET</div>
                     <h3>/api/clansTotal</h3>
-                    <p>Get total clan count in system</p>
-                    <a href="https://pet-api-wjkm.onrender.com/api/clansTotal" class="endpoint-link">Execute</a>
+                    <p>Total clan count</p>
+                    <a href="https://eu-pet01.whee.lol/api/clansTotal" class="endpoint-link">Execute</a>
                 </div>
                 <div class="endpoint-card">
                     <div class="endpoint-method">GET</div>
                     <h3>/api/clans</h3>
-                    <p>Retrieve paginated clan list with sorting</p>
-                    <a href="https://pet-api-wjkm.onrender.com/api/clans?sort=-members&limit=20" class="endpoint-link">Execute</a>
+                    <p>Paginated clan list</p>
+                    <a href="https://eu-pet01.whee.lol/api/clans?sort=-members&limit=20" class="endpoint-link">Execute</a>
                 </div>
                 <div class="endpoint-card">
                     <div class="endpoint-method">GET</div>
                     <h3>/api/clan/:name</h3>
-                    <p>Get detailed clan information</p>
-                    <a href="https://pet-api-wjkm.onrender.com/api/clan/example" class="endpoint-link">Execute</a>
+                    <p>Get clan details</p>
+                    <a href="https://eu-pet01.whee.lol/api/clan/example" class="endpoint-link">Execute</a>
                 </div>
                 <div class="endpoint-card">
                     <div class="endpoint-method">GET</div>
                     <h3>/api/collection/:name</h3>
-                    <p>Query specific collection from database</p>
-                    <a href="https://pet-api-wjkm.onrender.com/api/collection/diamonds" class="endpoint-link">Execute</a>
+                    <p>Specific collection</p>
+                    <a href="https://eu-pet01.whee.lol/api/collection/diamonds" class="endpoint-link">Execute</a>
                 </div>
                 <div class="endpoint-card">
                     <div class="endpoint-method">GET</div>
                     <h3>/api/activeClanBattle</h3>
-                    <p>Monitor active clan battle status</p>
-                    <a href="https://pet-api-wjkm.onrender.com/api/activeClanBattle" class="endpoint-link">Execute</a>
+                    <p>Active battle info</p>
+                    <a href="https://eu-pet01.whee.lol/api/activeClanBattle" class="endpoint-link">Execute</a>
                 </div>
                 <div class="endpoint-card">
                     <div class="endpoint-method">GET</div>
                     <h3>/health</h3>
-                    <p>Check API health and availability</p>
-                    <a href="https://pet-api-wjkm.onrender.com/health" class="endpoint-link">Execute</a>
+                    <p>API health check</p>
+                    <a href="https://eu-pet01.whee.lol/health" class="endpoint-link">Execute</a>
                 </div>
             </div>
 
@@ -494,21 +639,33 @@
             <div class="code-section">
                 <h2>💻 CODE EXAMPLES</h2>
                 <h3>JavaScript</h3>
-                <pre><code>fetch('https://pet-api-wjkm.onrender.com/api/exists?limit=50')
+                <pre><code>fetch('https://eu-pet01.whee.lol/api/exists?limit=50')
   .then(res => res.json())
   .then(data => console.log(data))</code></pre>
                 <h3>Python</h3>
                 <pre><code>import requests
 
 response = requests.get(
-  'https://pet-api-wjkm.onrender.com/api/collections'
+  'https://eu-pet01.whee.lol/api/collections'
 )
 print(response.json())</code></pre>
                 <h3>cURL</h3>
-                <pre><code>curl "https://pet-api-wjkm.onrender.com/api/exists?limit=10"</code></pre>
+                <pre><code>curl "https://eu-pet01.whee.lol/api/exists?limit=10"</code></pre>
             </div>
         </div>
     </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>🚀 Pet Simulator 99 Private API | Built with ❤️</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                <a href="https://github.com/WhiteNeone00/petdataapi" class="footer-link">GitHub</a>
+                <a href="https://eu-pet01.whee.lol/health" class="footer-link">Status</a>
+                <a href="https://discord.gg" class="footer-link">Discord</a>
+            </p>
+            <p style="margin-top: 10px; font-size: 0.85em; color: #00ccff;">Running 24/7 with 5-60 min caching</p>
+        </div>
+    </footer>
 
     <script>
         // Particle Animation
@@ -517,7 +674,7 @@ print(response.json())</code></pre>
         const ctx = canvas.getContext('2d');
 
         canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.height = window.innerHeight - 50;
 
         const particles = [];
         const particleCount = 50;
@@ -590,14 +747,74 @@ print(response.json())</code></pre>
 
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.height = window.innerHeight - 50;
         });
+
+        // Snow Animation
+        function createSnowflake() {
+            const snowContainer = document.getElementById('snow-container');
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.innerHTML = '❄️';
+            
+            const size = Math.random() * 0.5 + 0.5;
+            const duration = Math.random() * 5 + 5;
+            const left = Math.random() * 100;
+            const tx = (Math.random() - 0.5) * 100;
+            
+            snowflake.style.left = left + '%';
+            snowflake.style.opacity = size;
+            snowflake.style.setProperty('--tx', tx + 'px');
+            snowflake.style.animation = `snowfall ${duration}s linear forwards`;
+            snowflake.style.fontSize = (1 + size) + 'em';
+            
+            snowContainer.appendChild(snowflake);
+            
+            setTimeout(() => snowflake.remove(), duration * 1000);
+        }
+
+        setInterval(createSnowflake, 100);
+
+        // Thunder/Lightning Effect
+        function createThunder() {
+            if (Math.random() < 0.1) {
+                const thunder = document.getElementById('thunder');
+                thunder.style.background = 'rgba(255, 255, 255, 0.3)';
+                setTimeout(() => {
+                    thunder.style.background = 'rgba(255, 255, 255, 0)';
+                }, 100);
+            }
+        }
+
+        setInterval(createThunder, 3000);
+
+        // Emoji Rain
+        const emojis = ['🎮', '🐱', '💎', '🔮', '✨', '🌟', '⭐', '🎪', '🎯', '🎨'];
+
+        function createEmojiRain() {
+            const emojiRain = document.getElementById('emoji-rain');
+            const emoji = document.createElement('div');
+            emoji.className = 'emoji';
+            emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            const left = Math.random() * window.innerWidth;
+            const duration = Math.random() * 3 + 3;
+            
+            emoji.style.left = left + 'px';
+            emoji.style.animation = `fall ${duration}s linear forwards`;
+            
+            emojiRain.appendChild(emoji);
+            
+            setTimeout(() => emoji.remove(), duration * 1000);
+        }
+
+        setInterval(createEmojiRain, 300);
 
         // API Tester
         async function testEndpoint() {
             const url = document.getElementById('testUrl').value;
             const fullUrl = url.startsWith('http') ? url : 
-                `https://pet-api-wjkm.onrender.com${url}`;
+                `https://eu-pet01.whee.lol${url}`;
             try {
                 document.getElementById('response').textContent = 'Loading...';
                 const res = await fetch(fullUrl);
