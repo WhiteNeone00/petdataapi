@@ -27,13 +27,14 @@
             right: 0;
             background: linear-gradient(90deg, #ff006e, #00ff88, #00ccff);
             background-size: 200% 200%;
-            animation: barShift 4s ease infinite;
+            animation: barShift 6s ease infinite;
             padding: 12px 20px;
             text-align: center;
             color: white;
             font-weight: 700;
             z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.6), inset 0 1px 0 rgba(255,255,255,0.2);
+            letter-spacing: 1px;
         }
 
         @keyframes barShift {
@@ -44,13 +45,12 @@
 
         .announcement {
             font-size: 0.95em;
-            letter-spacing: 1px;
-            animation: pulse 2s ease infinite;
+            animation: smoothPulse 2s ease-in-out infinite;
         }
 
-        @keyframes pulse {
+        @keyframes smoothPulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+            50% { opacity: 0.75; }
         }
 
         #particles-container {
@@ -78,16 +78,27 @@
             top: -10px;
             color: #00ff88;
             font-size: 1.5em;
-            text-shadow: 0 0 5px rgba(0, 255, 136, 0.8);
-            animation: snowfall linear infinite;
-            opacity: 0.8;
+            text-shadow: 0 0 8px rgba(0, 255, 136, 0.8);
+            opacity: 0.85;
+            filter: drop-shadow(0 0 2px rgba(0, 255, 136, 0.5));
         }
 
-        @keyframes snowfall {
-            to {
-                transform: translateY(100vh) translateX(var(--tx));
-                opacity: 0;
-            }
+        #fire-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 50px;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .fire {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            pointer-events: none;
         }
 
         #thunder {
@@ -99,30 +110,7 @@
             background: rgba(255, 255, 255, 0);
             z-index: 5;
             pointer-events: none;
-        }
-
-        #emoji-rain {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 50px;
-            left: 0;
-            z-index: 2;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .emoji {
-            position: absolute;
-            font-size: 2em;
-            animation: fall linear infinite;
-        }
-
-        @keyframes fall {
-            to {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
+            transition: background 0.05s ease;
         }
 
         canvas {
@@ -143,12 +131,17 @@
         }
 
         .content::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .content::-webkit-scrollbar-thumb {
             background: #00ff88;
             border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: #00ccff;
         }
 
         .container {
@@ -159,13 +152,13 @@
         header {
             text-align: center;
             margin-bottom: 60px;
-            animation: slideDown 0.8s ease;
+            animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         @keyframes slideDown {
             from {
                 opacity: 0;
-                transform: translateY(-30px);
+                transform: translateY(-20px);
             }
             to {
                 opacity: 1;
@@ -199,6 +192,18 @@
             letter-spacing: 2px;
             font-weight: 300;
             text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .stats-grid {
@@ -209,20 +214,21 @@
         }
 
         .stat-box {
-            background: rgba(0, 255, 136, 0.1);
-            border: 2px solid #00ff88;
+            background: rgba(0, 255, 136, 0.08);
+            border: 2px solid rgba(0, 255, 136, 0.4);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 12px;
             backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             text-align: center;
             cursor: pointer;
         }
 
         .stat-box:hover {
-            background: rgba(0, 255, 136, 0.2);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
-            transform: translateY(-5px);
+            background: rgba(0, 255, 136, 0.15);
+            border-color: #00ff88;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+            transform: translateY(-8px);
         }
 
         .stat-label {
@@ -231,12 +237,14 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .stat-value {
             color: #00ff88;
-            font-size: 1.8em;
+            font-size: 1.9em;
             font-weight: 700;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
         }
 
         .endpoints-grid {
@@ -247,11 +255,11 @@
         }
 
         .endpoint-card {
-            background: rgba(0, 20, 40, 0.8);
-            border: 2px solid rgba(0, 255, 136, 0.3);
+            background: rgba(0, 20, 40, 0.7);
+            border: 2px solid rgba(0, 255, 136, 0.25);
             border-radius: 12px;
             padding: 25px;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
@@ -264,9 +272,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
-            transition: left 0.5s ease;
-            z-index: -1;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.08), transparent);
+            transition: left 0.6s ease;
         }
 
         .endpoint-card:hover::before {
@@ -275,19 +282,21 @@
 
         .endpoint-card:hover {
             border-color: #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5), inset 0 0 20px rgba(0, 255, 136, 0.05);
+            background: rgba(0, 20, 40, 0.9);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.5), inset 0 0 15px rgba(0, 255, 136, 0.03);
             transform: translateY(-8px);
         }
 
         .endpoint-method {
             display: inline-block;
-            background: linear-gradient(45deg, #00ff88, #00ccff);
+            background: linear-gradient(135deg, #00ff88, #00ccff);
             color: #0a0e27;
             padding: 4px 12px;
             border-radius: 4px;
             font-size: 0.8em;
             font-weight: 700;
             margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0, 255, 136, 0.3);
         }
 
         .endpoint-card h3 {
@@ -296,52 +305,58 @@
             font-size: 1.3em;
             font-family: 'Monaco', 'Courier New', monospace;
             letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
         }
 
         .endpoint-card p {
             color: #aaa;
             margin-bottom: 15px;
             line-height: 1.6;
+            font-size: 0.95em;
         }
 
         .endpoint-link {
             display: inline-block;
             color: #00ccff;
             text-decoration: none;
-            border: 1px solid #00ccff;
+            border: 1.5px solid #00ccff;
             padding: 8px 16px;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.3s ease;
             font-weight: 600;
             font-size: 0.9em;
             margin-top: 10px;
+            background: rgba(0, 204, 255, 0);
         }
 
         .endpoint-link:hover {
             background: #00ccff;
             color: #0a0e27;
-            box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
+            transform: scale(1.05);
         }
 
         .tester-section {
-            background: rgba(0, 20, 40, 0.8);
-            border: 2px solid rgba(0, 255, 136, 0.3);
+            background: rgba(0, 20, 40, 0.7);
+            border: 2px solid rgba(0, 255, 136, 0.25);
             padding: 40px;
             border-radius: 12px;
             backdrop-filter: blur(10px);
             margin-bottom: 60px;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
 
         .tester-section:hover {
             border-color: #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            background: rgba(0, 20, 40, 0.9);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.4);
         }
 
         .tester-section h2 {
             color: #00ff88;
             margin-bottom: 25px;
             font-size: 1.8em;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
         }
 
         .tester-input {
@@ -352,10 +367,10 @@
 
         .tester-input input {
             flex: 1;
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid #00ccff;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(0, 204, 255, 0.4);
             padding: 12px 15px;
-            border-radius: 6px;
+            border-radius: 8px;
             color: #00ff88;
             font-size: 1em;
             font-family: 'Monaco', monospace;
@@ -365,6 +380,7 @@
         .tester-input input:focus {
             outline: none;
             border-color: #00ff88;
+            background: rgba(0, 0, 0, 0.6);
             box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
         }
 
@@ -373,33 +389,34 @@
         }
 
         .tester-input button {
-            background: linear-gradient(45deg, #00ff88, #00ccff);
+            background: linear-gradient(135deg, #00ff88, #00ccff);
             color: #0a0e27;
             border: none;
             padding: 12px 35px;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 700;
             font-size: 1em;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             text-transform: uppercase;
             letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
         }
 
         .tester-input button:hover {
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
-            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.7);
+            transform: scale(1.08);
         }
 
         .tester-input button:active {
-            transform: scale(0.95);
+            transform: scale(0.96);
         }
 
         #response {
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(0, 255, 136, 0.3);
             padding: 20px;
-            border-radius: 6px;
+            border-radius: 8px;
             max-height: 500px;
             overflow-y: auto;
             font-family: 'Monaco', monospace;
@@ -420,8 +437,8 @@
         }
 
         .code-section {
-            background: rgba(0, 20, 40, 0.8);
-            border: 2px solid rgba(0, 255, 136, 0.3);
+            background: rgba(0, 20, 40, 0.7);
+            border: 2px solid rgba(0, 255, 136, 0.25);
             padding: 40px;
             border-radius: 12px;
             backdrop-filter: blur(10px);
@@ -432,6 +449,7 @@
             color: #00ff88;
             margin-bottom: 25px;
             font-size: 1.8em;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
         }
 
         .code-section h3 {
@@ -442,10 +460,10 @@
         }
 
         pre {
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(0, 255, 136, 0.3);
             padding: 15px;
-            border-radius: 6px;
+            border-radius: 8px;
             overflow-x: auto;
             font-size: 0.9em;
             color: #00ff88;
@@ -467,7 +485,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(180deg, transparent, rgba(10, 14, 39, 0.95));
+            background: linear-gradient(180deg, rgba(10, 14, 39, 0.3), rgba(10, 14, 39, 0.95));
             border-top: 2px solid rgba(0, 255, 136, 0.3);
             padding: 30px 20px;
             text-align: center;
@@ -486,11 +504,12 @@
             text-decoration: none;
             margin: 0 15px;
             transition: all 0.3s ease;
+            font-weight: 600;
         }
 
         .footer-link:hover {
             color: #00ff88;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.7);
         }
 
         @media (max-width: 768px) {
@@ -528,10 +547,6 @@
                 margin: 5px;
             }
         }
-
-        .glow-text {
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-        }
     </style>
 </head>
 <body>
@@ -541,14 +556,14 @@
 
     <div id="particles-container"></div>
     <div id="snow-container"></div>
-    <div id="emoji-rain"></div>
+    <div id="fire-container"></div>
     <div id="thunder"></div>
 
     <div class="content">
         <div class="container">
             <header>
                 <h1>🎮 PET SIM 99 API</h1>
-                <p class="subtitle glow-text">FUTURISTIC DATA GATEWAY</p>
+                <p class="subtitle">FUTURISTIC DATA GATEWAY</p>
             </header>
 
             <div class="stats-grid">
@@ -566,7 +581,7 @@
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">Status</div>
-                    <div class="stat-value" style="color: #00ff88;">🟢 LIVE</div>
+                    <div class="stat-value">🟢 LIVE</div>
                 </div>
             </div>
 
@@ -668,7 +683,16 @@ print(response.json())</code></pre>
     </footer>
 
     <script>
-        // Particle Animation
+        // Mouse tracking for fling effect
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // Particle Animation with Fling Physics
         const canvas = document.createElement('canvas');
         document.getElementById('particles-container').appendChild(canvas);
         const ctx = canvas.getContext('2d');
@@ -677,22 +701,41 @@ print(response.json())</code></pre>
         canvas.height = window.innerHeight - 50;
 
         const particles = [];
-        const particleCount = 50;
+        const particleCount = 60;
 
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.radius = Math.random() * 1.5;
-                this.opacity = Math.random() * 0.5 + 0.2;
+                this.vx = (Math.random() - 0.5) * 1;
+                this.vy = (Math.random() - 0.5) * 1;
+                this.radius = Math.random() * 1.2 + 0.5;
+                this.opacity = Math.random() * 0.4 + 0.3;
+                this.friction = 0.98;
+                this.minOpacity = this.opacity;
             }
 
-            update() {
+            update(mouseX, mouseY) {
+                // Fling/attraction to mouse
+                const dx = mouseX - this.x;
+                const dy = mouseY + 50 - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 200) {
+                    const force = (200 - distance) * 0.001;
+                    this.vx += (dx / distance) * force;
+                    this.vy += (dy / distance) * force;
+                }
+
+                // Normal movement
                 this.x += this.vx;
                 this.y += this.vy;
+                
+                // Friction damping
+                this.vx *= this.friction;
+                this.vy *= this.friction;
 
+                // Wrap around edges
                 if (this.x < 0) this.x = canvas.width;
                 if (this.x > canvas.width) this.x = 0;
                 if (this.y < 0) this.y = canvas.height;
@@ -718,8 +761,9 @@ print(response.json())</code></pre>
                     const dy = particles[i].y - particles[j].y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
 
-                    if (distance < 150) {
-                        ctx.strokeStyle = `rgba(0, 255, 136, ${0.3 * (1 - distance / 150)})`;
+                    if (distance < 120) {
+                        const alpha = 0.25 * (1 - distance / 120);
+                        ctx.strokeStyle = `rgba(0, 255, 136, ${alpha})`;
                         ctx.lineWidth = 1;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
@@ -731,11 +775,11 @@ print(response.json())</code></pre>
         }
 
         function animate() {
-            ctx.fillStyle = '#0a0e27';
+            ctx.fillStyle = 'rgba(10, 14, 39, 0.1)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             particles.forEach(particle => {
-                particle.update();
+                particle.update(mouseX, mouseY);
                 particle.draw();
             });
 
@@ -750,65 +794,112 @@ print(response.json())</code></pre>
             canvas.height = window.innerHeight - 50;
         });
 
-        // Snow Animation
+        // Smooth Snow Animation
         function createSnowflake() {
             const snowContainer = document.getElementById('snow-container');
             const snowflake = document.createElement('div');
             snowflake.className = 'snowflake';
             snowflake.innerHTML = '❄️';
             
-            const size = Math.random() * 0.5 + 0.5;
-            const duration = Math.random() * 5 + 5;
+            const size = Math.random() * 0.4 + 0.5;
+            const duration = Math.random() * 6 + 8;
             const left = Math.random() * 100;
-            const tx = (Math.random() - 0.5) * 100;
+            const delay = Math.random() * 2;
             
             snowflake.style.left = left + '%';
-            snowflake.style.opacity = size;
-            snowflake.style.setProperty('--tx', tx + 'px');
-            snowflake.style.animation = `snowfall ${duration}s linear forwards`;
-            snowflake.style.fontSize = (1 + size) + 'em';
+            snowflake.style.opacity = size * 0.9;
+            snowflake.style.fontSize = (0.8 + size * 0.5) + 'em';
+            snowflake.style.animation = `none`;
+            snowflake.style.animation = `snowfall ${duration}s linear ${delay}s infinite`;
             
             snowContainer.appendChild(snowflake);
-            
-            setTimeout(() => snowflake.remove(), duration * 1000);
         }
 
-        setInterval(createSnowflake, 100);
+        // Create snow continuously
+        for (let i = 0; i < 30; i++) {
+            createSnowflake();
+        }
+        setInterval(createSnowflake, 800);
+
+        // Add smooth snowfall keyframe
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes snowfall {
+                0% {
+                    transform: translateY(-100px) translateX(0px) rotate(0deg);
+                    opacity: 1;
+                }
+                50% {
+                    transform: translateY(50vh) translateX(50px) rotate(180deg);
+                    opacity: 0.9;
+                }
+                100% {
+                    transform: translateY(100vh) translateX(-30px) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Fire/Flame Effect
+        function createFire() {
+            const fireContainer = document.getElementById('fire-container');
+            const fire = document.createElement('div');
+            fire.className = 'fire';
+            
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * (window.innerHeight - 50);
+            const size = Math.random() * 20 + 10;
+            
+            fire.style.left = x + 'px';
+            fire.style.top = y + 'px';
+            fire.style.width = size + 'px';
+            fire.style.height = size + 'px';
+            fire.style.background = `radial-gradient(circle, rgba(255, 100, 0, 0.8), rgba(255, 200, 0, 0.4))`;
+            fire.style.boxShadow = `0 0 ${size}px rgba(255, 100, 0, 0.8)`;
+            fire.style.animation = `fireFlicker ${Math.random() * 1 + 0.5}s ease-in-out forwards`;
+            
+            fireContainer.appendChild(fire);
+            
+            setTimeout(() => fire.remove(), 1000);
+        }
+
+        document.head.appendChild(style);
+        const fireStyle = document.createElement('style');
+        fireStyle.textContent = `
+            @keyframes fireFlicker {
+                0% { 
+                    opacity: 0; 
+                    transform: translateY(0);
+                }
+                50% { 
+                    opacity: 0.8; 
+                    filter: blur(2px);
+                }
+                100% { 
+                    opacity: 0; 
+                    transform: translateY(-80px);
+                }
+            }
+        `;
+        document.head.appendChild(fireStyle);
+
+        setInterval(createFire, 400);
 
         // Thunder/Lightning Effect
         function createThunder() {
-            if (Math.random() < 0.1) {
+            if (Math.random() < 0.06) {
                 const thunder = document.getElementById('thunder');
-                thunder.style.background = 'rgba(255, 255, 255, 0.3)';
+                const intensity = Math.random() * 0.4 + 0.1;
+                thunder.style.background = `rgba(255, 255, 255, ${intensity})`;
+                
                 setTimeout(() => {
                     thunder.style.background = 'rgba(255, 255, 255, 0)';
-                }, 100);
+                }, 80);
             }
         }
 
-        setInterval(createThunder, 3000);
-
-        // Emoji Rain
-        const emojis = ['🎮', '🐱', '💎', '🔮', '✨', '🌟', '⭐', '🎪', '🎯', '🎨'];
-
-        function createEmojiRain() {
-            const emojiRain = document.getElementById('emoji-rain');
-            const emoji = document.createElement('div');
-            emoji.className = 'emoji';
-            emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-            
-            const left = Math.random() * window.innerWidth;
-            const duration = Math.random() * 3 + 3;
-            
-            emoji.style.left = left + 'px';
-            emoji.style.animation = `fall ${duration}s linear forwards`;
-            
-            emojiRain.appendChild(emoji);
-            
-            setTimeout(() => emoji.remove(), duration * 1000);
-        }
-
-        setInterval(createEmojiRain, 300);
+        setInterval(createThunder, 800);
 
         // API Tester
         async function testEndpoint() {
