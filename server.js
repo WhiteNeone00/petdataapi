@@ -7,17 +7,31 @@ const path = require('path');
 const fs = require('fs');
 
 // Initialize Firebase
-let serviceAccountPath = path.join(__dirname, 'serviceAccountKey.json');
-if (!fs.existsSync(serviceAccountPath)) {
-  serviceAccountPath = path.join(__dirname, 'functions', 'serviceAccountKey.json');
-}
-if (!fs.existsSync(serviceAccountPath)) {
-  console.error('❌ ERROR: serviceAccountKey.json not found!');
-  console.error('Download it from: https://console.firebase.google.com/project/petssim/settings/serviceaccounts');
-  process.exit(1);
-}
+let serviceAccount;
 
-const serviceAccount = require(serviceAccountPath);
+// Try environment variable first (for Render/Cloud deployments)
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  try {
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+    console.log('✓ Using Firebase credentials from environment variable');
+  } catch (e) {
+    console.error('❌ ERROR: Invalid FIREBASE_SERVICE_ACCOUNT JSON');
+    process.exit(1);
+  }
+} else {
+  // Fall back to file (for local development)
+  let serviceAccountPath = path.join(__dirname, 'serviceAccountKey.json');
+  if (!fs.existsSync(serviceAccountPath)) {
+    serviceAccountPath = path.join(__dirname, 'functions', 'serviceAccountKey.json');
+  }
+  if (!fs.existsSync(serviceAccountPath)) {
+    console.error('❌ ERROR: serviceAccountKey.json not found and FIREBASE_SERVICE_ACCOUNT env var not set!');
+    console.error('Set FIREBASE_SERVICE_ACCOUNT env var or place serviceAccountKey.json in project root');
+    process.exit(1);
+  }
+  serviceAccount = require(serviceAccountPath);
+  console.log('✓ Using Firebase credentials from file');
+}
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   projectId: 'petssim',
