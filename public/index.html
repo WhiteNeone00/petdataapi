@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Simulator 99 API - Documentation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>🐾 Pet Simulator 99 API</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#endpoints">Endpoints</a></li>
+                <li><a href="#information">API Info</a></li>
+                <li><a href="#examples">Examples</a></li>
+                <li><a href="https://github.com/BIG-Games-LLC/ps99-public-api-docs" target="_blank">GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Pet Simulator 99 Public API</h1>
+            <p>Access in-game data for pets, items, clans, and more</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="document.getElementById('endpoints').scrollIntoView()">Get Started</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('examples').scrollIntoView()">View Examples</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="introduction" class="section">
+            <div class="container">
+                <h2>Introduction</h2>
+                <p>The Pet Simulator 99 Public API provides access to in-game data and configuration details. With this API, developers can retrieve information about pets, items, clans, and more, allowing for the creation of external tools, websites, Discord bots, and other applications.</p>
+                
+                <div class="info-box">
+                    <h3>📍 Production URL</h3>
+                    <code>https://yourapi.example.com/api/</code>
+                    <p style="margin-top: 10px; color: #666;">Replace with your actual Firebase Hosting URL</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="endpoints" class="section">
+            <div class="container">
+                <h2>API Endpoints</h2>
+
+                <!-- Collections -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/collections</span>
+                    </div>
+                    <p>Types of data from Pet Simulator 99's in-game configuration. These are like tables of a database.</p>
+                    <div class="code-block">
+                        <div class="code-header">Request</div>
+                        <pre><code>curl 'https://yourapi.example.com/api/collections'</code></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">Response</div>
+                        <pre><code>{
+  "status": "ok",
+  "data": [
+    "Achievements", "Boosts", "Booths", "Boxes",
+    "Buffs", "Charms", "Currency", "Eggs",
+    "Enchants", "FishingRods", "Fruits", ...
+  ]
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Collection -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/collection/{collectionName}</span>
+                    </div>
+                    <p>Details from a specified collection. Contains configuration data like rows of a database.</p>
+                    <div class="code-block">
+                        <div class="code-header">Request</div>
+                        <pre><code>curl 'https://yourapi.example.com/api/collection/Pets'</code></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">Response</div>
+                        <pre><code>{
+  "status": "ok",
+  "data": [
+    {
+      "configName": "Huge Cosmic Axolotl",
+      "category": "Huge",
+      "configData": {
+        "name": "Huge Cosmic Axolotl",
+        "thumbnail": "rbxassetid://15201636161"
+      },
+      "collection": "Pets"
+    }
+  ]
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Clans List -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/clansList</span>
+                    </div>
+                    <p>Get a list of all clan names.</p>
+                    <div class="code-block">
+                        <div class="code-header">Request</div>
+                        <pre><code>curl 'https://yourapi.example.com/api/clansList'</code></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">Response</div>
+                        <pre><code>{
+  "status": "ok",
+  "data": ["KIL1", "ukbd", "c1aw", "hdkn", "C0ME", ...]
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Clans Total -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/clansTotal</span>
+                    </div>
+                    <p>Get the total number of clans.</p>
+                    <div class="code-block">
+                        <div class="code-header">Request</div>
+                        <pre><code>curl 'https://yourapi.example.com/api/clansTotal'</code></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">Response</div>
+                        <pre><code>{
+  "status": "ok",
+  "data": 145463
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Clans -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/clans</span>
+                    </div>
+                    <p>Get paginated list of clans with sorting options.</p>
+                    <div class="parameters">
+                        <strong>Query Parameters:</strong>
+                        <ul>
+                            <li><code>page</code> (optional): Page number (default: 1)</li>
+                            <li><code>pageSize</code> (optional): Items per page (default: 10)</li>
+                            <li><code>sort</code> (optional): Field to sort by (default: Points)</li>
+                            <li><code>sortOrder</code> (optional): "asc" or "desc" (default: desc)</li>
+                        </ul>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-header">Request</div>
+                        <pre><code>curl 'https://yourapi.example.com/api/clans?page=1&pageSize=10&sort=Points&sortOrder=desc'</code></pre>
+                    </div>
+                </div>
+
+                <!-- Clan -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/clan/{clanName}</span>
+                    </div>
+                    <p>Get details for a specific clan.</p>
+                    <div class="code-block">
+                        <div class="code-header">Request</div>
+                        <pre><code>curl 'https://yourapi.example.com/api/clan/CAT'</code></pre>
+                    </div>
+                </div>
+
+                <!-- Exists -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/exists</span>
+                    </div>
+                    <p>Exists data for each item and pet in the game.</p>
+                    <div class="parameters">
+                        <strong>Notes:</strong>
+                        <ul>
+                            <li>For pets: <code>pt=1</code> is golden, <code>pt=2</code> is rainbow, <code>sh</code> is shiny</li>
+                            <li>For potions/enchants: <code>tn</code> is tier number</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- RAP -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/rap</span>
+                    </div>
+                    <p>Get RAP (Recent Average Price) data for items.</p>
+                    <div class="code-block">
+                        <div class="code-header">Request</div>
+                        <pre><code>curl 'https://yourapi.example.com/api/rap'</code></pre>
+                    </div>
+                </div>
+
+                <!-- Active Clan Battle -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/activeClanBattle</span>
+                    </div>
+                    <p>Get information about the currently active clan battle.</p>
+                </div>
+
+                <!-- Image -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/image/{imageId}</span>
+                    </div>
+                    <p>Displays a Roblox library asset as an image by proxying the request.</p>
+                    <div class="code-block">
+                        <div class="code-header">Request</div>
+                        <pre><code>curl 'https://yourapi.example.com/image/14615650278'</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="information" class="section bg-light">
+            <div class="container">
+                <h2>API Information</h2>
+
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>📋 Standard Responses</h3>
+                        <p><strong>Success (200):</strong> Returns JSON with <code>status: "ok"</code> and optional <code>data</code> field.</p>
+                        <p><strong>Error (400):</strong> Returns JSON with <code>status: "error"</code>, <code>error</code> message, and <code>ignore</code> flag.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>⏱️ Caching Policy</h3>
+                        <ul>
+                            <li>Collections: 1 hour</li>
+                            <li>Clans: 5 minutes</li>
+                            <li>Exists data: 4 hours</li>
+                            <li>RAP data: 4 hours</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>⚡ Rate Limiting</h3>
+                        <p>Limit requests to <strong>100 per minute</strong> per IP address. Cache your requests to avoid rate limiting.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>🔄 Versioning</h3>
+                        <p>We strive to maintain backward compatibility. Any breaking changes will be clearly documented.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="examples" class="section">
+            <div class="container">
+                <h2>Code Examples</h2>
+
+                <div class="examples-tabs">
+                    <div class="example">
+                        <h3>🟨 JavaScript</h3>
+                        <div class="code-block">
+                            <pre><code>// Using Fetch API in JavaScript
+fetch('https://yourapi.example.com/api/collections')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="example">
+                        <h3>🐍 Python</h3>
+                        <div class="code-block">
+                            <pre><code># Example using requests library
+import requests
+
+response = requests.get('https://yourapi.example.com/api/collections')
+data = response.json()
+print(data)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="example">
+                        <h3>🐘 PHP</h3>
+                        <div class="code-block">
+                            <pre><code>&lt;?php
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => 'https://yourapi.example.com/api/collections',
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_TIMEOUT => 0,
+));
+
+$response = curl_exec($curl);
+curl_close($curl);
+echo $response;
+?&gt;</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="example">
+                        <h3>🟧 Node.js</h3>
+                        <div class="code-block">
+                            <pre><code>const axios = require('axios');
+
+axios.get('https://yourapi.example.com/api/collections')
+  .then(response => console.log(response.data))
+  .catch(error => console.error('Error:', error));</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section bg-light">
+            <div class="container">
+                <h2>Integration Tips</h2>
+                <div class="tips">
+                    <div class="tip">
+                        <h4>💾 Cache Data Locally</h4>
+                        <p>Store API responses in your database or cache to reduce API calls and improve performance.</p>
+                    </div>
+                    <div class="tip">
+                        <h4>🔄 Handle Rate Limits</h4>
+                        <p>Implement exponential backoff when you hit rate limits (HTTP 429 responses).</p>
+                    </div>
+                    <div class="tip">
+                        <h4>📊 Monitor Your Usage</h4>
+                        <p>Keep track of how many requests you're making to optimize your application.</p>
+                    </div>
+                    <div class="tip">
+                        <h4>🛡️ Use HTTPS</h4>
+                        <p>Always communicate with the API over HTTPS for security.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2>Support</h2>
+                <p>For issues, feature requests, or questions:</p>
+                <ul style="margin-top: 20px;">
+                    <li><a href="https://github.com/BIG-Games-LLC/ps99-public-api-docs/issues" target="_blank">📝 Open an issue on GitHub</a></li>
+                    <li><a href="https://github.com/BIG-Games-LLC/ps99-public-api-docs" target="_blank">⭐ View documentation repository</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Pet Simulator 99 API. Built with ❤️ using Firebase.</p>
+            <p style="margin-top: 10px;">Explore the endpoints and integrate into your applications! Happy coding! 🚀</p>
+        </div>
+    </footer>
+
+    <script>
+        // API test functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Pet Simulator 99 API Documentation loaded');
+        });
+    </script>
+</body>
+</html>
